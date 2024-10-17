@@ -14,3 +14,4 @@ echo "GET /test.html HTTP/1.1"
 echo "Host: sfu.ca"
 echo
 sleep 2
+
