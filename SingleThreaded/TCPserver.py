@@ -31,9 +31,12 @@ while flag:
     # print(R_char_and_L_char)
     # if(R_char_and_L_char == '\n'):
     #     print('yassss')
+
+    print("RESPONSE:")
     match command:
         case 'GET':
-            to_send = version + ' 200 OK'
+            to_send = (version + ' 200 OK')
+            print(version)
             print(to_send)
             connectionSocket.send(to_send.encode())
             flag = False
