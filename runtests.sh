@@ -15,5 +15,5 @@ port=${2}
 # echo
 # sleep 2
 
-curl '${host}:${port}'
+curl "${host}:${port}"
 
