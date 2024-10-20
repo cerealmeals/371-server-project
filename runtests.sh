@@ -1,19 +1,17 @@
 #!/bin/bash
 
-
+# 
 host=${1}
 port=${2}
-# telnet $host $port << EOF
-# GET url HTTP/1.1
-# EOF
-# sleep 1
+url=${3}
 
-# echo "open ${host} ${port}" 
-# sleep 1
-# echo "GET /test.html HTTP/1.1" 
-# echo "Host: sfu.ca"
-# echo
-# sleep 2
-
-curl '${host}:${port}'
-
+# Test Not found 404
+curl -i -o output404.txt "${host}:${port}/badurl"
+# Test Not Modified 304
+curl -i -o output304.txt --header 'If-Modified-Since: Sat, 20 Oct 2024 01:24:29 GMT' "${host}:${port}/${url}"
+# Test Not Implemented 501
+curl -i -o output501.txt-I "${host}:${port}/${url}"
+# Test Bad resquest 400
+curl -i -o output400.txt -X WRONG "${host}:${port}/${url}"
+# Test OK 200 and when "if modified" is later than "last modified"
+curl -i -o output200.txt --header 'If-Modified-Since: Sat, 18 Oct 2024 01:24:29 GMT' "${host}:${port}/${url}"
