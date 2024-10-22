@@ -74,6 +74,7 @@ serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind((hostname, serverPort))
 serverSocket.listen(5)
 
+print('Proxy Server is ready at IP:', IPAddr, ' and port:', serverPort)
 while True:
     client_socket, addr = serverSocket.accept()
     print('address:', addr[0], ':', addr[1])
