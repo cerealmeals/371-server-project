@@ -40,13 +40,13 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
             host = line[6:]
             if(host != (IPAddr + ':'+ str(serverPort))):
             #proxy server stuff
-                BadRequest(version, connectionSocket)
+                BadRequest(version, connectionSocket, IPAddr)
                 return True
         elif line[:19] == 'If-Modified-Since: ':
             t_string = line[19:(19+25)]
             #print(t_string)
             if os.path.getmtime(url) < timegm(strptime(t_string, '%a, %d %b %Y %H:%M:%S')):
-                NotModified(version, connectionSocket, url)
+                NotModified(version, connectionSocket, url, IPAddr)
                 return True
     
     # try to open the file
@@ -56,12 +56,12 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
             data = f.read()
         except Exception as e:
             print(e)
-            BadRequest(version, connectionSocket)
+            BadRequest(version, connectionSocket, IPAddr)
             f.close()
             return True
     except Exception as e:
         print(e)
-        NotFound(version, connectionSocket)
+        NotFound(version, connectionSocket, IPAddr)
         return True
     f.close()
     
