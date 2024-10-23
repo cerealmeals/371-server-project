@@ -43,6 +43,10 @@ def GetCommand(lines_in_response, version, connectionSocket, url):
             #proxy server stuff
                 BadRequest(version, connectionSocket)
                 return True
+            if(host != (IPAddr + ':'+ str(serverPort))):
+            #proxy server stuff
+                BadRequest(version, connectionSocket)
+                return True
         elif line[:19] == 'If-Modified-Since: ':
             t_string = line[19:(19+25)]
             #print(t_string)
@@ -54,8 +58,7 @@ def GetCommand(lines_in_response, version, connectionSocket, url):
     
     
     
-
-    #print(url)
+    # try to open the file
     try:
         f = open(url, 'r', encoding='utf-8')
         try:
