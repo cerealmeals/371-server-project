@@ -22,22 +22,27 @@ def makeHTTPresponse(statusLine, data, url):
     return to_send
 
 def GetCommand(lines_in_response, version, connectionSocket, url):
-    
+
     # get the url
     if url.find('https://') != -1:
-        start = url.find('https://') + len('https://')
-        url = url[1 + url.find('/',start):]
+        start = url.find('https://')
+        url = url[1+ url.find('/',start):]
     elif url.find('http://') != -1:
-        start = url.find('http://') + len('http://')
-        url = url[1 + url.find('/',start + 1):]
+        start = url.find('http://')
+        url = url[1+ url.find('/',start):]
     else:
         url = url[1:]
 
+    # look at the host
     host = 'error'
     for line in lines_in_response:
         #print('test', line)
         if line[:6] == 'Host: ':
             host = line[6:]
+            if(host != (IPAddr + ':'+ str(serverPort))):
+            #proxy server stuff
+                BadRequest(version, connectionSocket)
+                return True
             if(host != (IPAddr + ':'+ str(serverPort))):
             #proxy server stuff
                 BadRequest(version, connectionSocket)
@@ -48,6 +53,10 @@ def GetCommand(lines_in_response, version, connectionSocket, url):
             if os.path.getmtime(url) < timegm(strptime(t_string, '%a, %d %b %Y %H:%M:%S')):
                 NotModified(version, connectionSocket, url)
                 return True
+    #print(host)
+
+    
+    
     
     # try to open the file
     try:
