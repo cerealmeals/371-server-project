@@ -14,5 +14,5 @@ curl -i -o output501.txt -X POST "${host}:${port}/${url}"
 # Test Bad resquest 400
 curl -i -o output400.txt -X WRONG "${host}:${port}/${url}"
 # Test OK 200 and when "if modified" is later than "last modified"
-curl -i -o output200.txt --header 'If-Modified-Since: Sat, 18 Oct 2024 01:24:29 GMT' "${host}:${port}/${url}"
+curl -i -o output200.txt --header 'If-Modified-Since: Sat, 01 Oct 2024 01:24:29 GMT' "${host}:${port}/${url}"
 
