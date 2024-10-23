@@ -18,7 +18,7 @@ def makeHTTPresponse(statusLine, data, url, IPAddr):
     response_lines.append('')
     if data != None:
         response_lines.append(data)
-    to_send = '\r\n'.join(response_lines)
+    to_send = (os.linesep).join(response_lines)
     return to_send
 
 def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, serverPort):
@@ -39,7 +39,7 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
         if line[:6] == 'Host: ':
             host = line[6:]
             if(host != (IPAddr + ':'+ str(serverPort))):
-            #proxy server stuff
+                #proxy server stuff
                 BadRequest(version, connectionSocket, IPAddr)
                 return True
         elif line[:19] == 'If-Modified-Since: ':
@@ -49,6 +49,10 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
                 NotModified(version, connectionSocket, url, IPAddr)
                 return True
     
+    # if the host line is not there send bad request
+    if host == 'error':
+        BadRequest(version, connectionSocket, IPAddr)
+    
     # try to open the file
     try:
         f = open(url, 'r', encoding='utf-8')
@@ -56,7 +60,6 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
             data = f.read()
         except Exception as e:
             print(e)
-            BadRequest(version, connectionSocket, IPAddr)
             f.close()
             return True
     except Exception as e:
