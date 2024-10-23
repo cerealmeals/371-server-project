@@ -16,12 +16,12 @@ serverSocket.listen(5)
 print ('The server is ready to receive at ID:', IPAddr, 'and Port:', serverPort)
 
 def mutil_thread(connectionSocket):
-    while True:
+    # while True:
         
         response = connectionSocket.recv(2048).decode()
-        if not response:
-            print('no data')
-            break
+        # if len(response) <= 0:
+        #     print('no data')
+        #     break
 
 
         # split the response line by line
@@ -62,7 +62,7 @@ def mutil_thread(connectionSocket):
                 NotImplmented(version, connectionSocket, IPAddr)
             case _: # Should be bad request because not a normal command
                 BadRequest(version, connectionSocket, IPAddr)
-    connectionSocket.close()
+        connectionSocket.close()
 
 
 while True:
