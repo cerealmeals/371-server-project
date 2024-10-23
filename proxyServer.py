@@ -7,7 +7,7 @@ from HTTPfunctions import *
 hostname = gethostname()
 IPAddr = gethostbyname(hostname)
 
-serverPort = 8234
+serverPort = 8235
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #proxy_host = '127.0.0.1'
 serverSocket.bind((hostname, serverPort))
