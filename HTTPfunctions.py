@@ -75,12 +75,37 @@ def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, server
 
 
 def NotImplmented(version, connectionSocket, IPAddr):
-    to_send = makeHTTPresponse(version + ' 501 Not Implemented', None, None, IPAddr)
+    try:
+        f = open('501.html', 'r', encoding='utf-8')
+        try:
+            data = f.read()
+        except Exception as e:
+            print(e)
+            f.close()
+            return True
+    except Exception as e:
+        print(e)
+        return True
+    f.close()
+    to_send = makeHTTPresponse(version + ' 501 Not Implemented', data, '501.html', IPAddr)
     print(to_send)
     connectionSocket.send(to_send.encode())
 
 def BadRequest(version, connectionSocket, IPAddr):
-    to_send = makeHTTPresponse(version + ' 400 Bad request', None, None, IPAddr)
+    try:
+        f = open('400.html', 'r', encoding='utf-8')
+        try:
+            data = f.read()
+        except Exception as e:
+            print(e)
+            f.close()
+            return True
+    except Exception as e:
+        print(e)
+        return True
+    f.close()
+
+    to_send = makeHTTPresponse(version + ' 400 Bad request', data, '400.html', IPAddr)
     print(to_send)
     connectionSocket.send(to_send.encode())
 
