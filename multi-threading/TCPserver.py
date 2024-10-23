@@ -22,7 +22,6 @@ def mutil_thread(connectionSocket):
         message = connectionSocket.recv(1024).decode()
         if not message:
             print('no data')
-            thread_lock.release()
             break
 
         # message = message.decode()
@@ -41,7 +40,6 @@ while True:
     # connectionSocket.send(capitalizedSentence.encode())
 
     # client acquire the lock
-    thread_lock.acquire()
     print('address:', addr[0], ':', addr[1])
 
     # open a new thread

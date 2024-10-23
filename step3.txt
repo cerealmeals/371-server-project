@@ -1,0 +1,17 @@
+a)  A proxy server needs to be able to receive HTTP requests and redirect them 
+    to the correct destination get the response from the correct server and 
+    return that response to the original client.
+
+    Do Katie do we need to implement web caching? It is talked about in the slides in the section she has mentioned
+
+b)  
+
+
+
+c)  We initially created the server single threaded and then implement multi-threaded.
+    But quickly changed it beacuse the server needs to be able to respond to multiple clients at a time.
+    When you accept a connecting you make a thread to handle the connection when that specific connection ends
+    you close the connection and the thread.
+    Being multithreaded alows for better performance because at some points your server might be waiting for the client,
+    during that time it can service other clients but only if it is multithreaded. It also allows the server to be almost
+    continuouly accepting new connections from clients. Our server has a max backlog of clients to be connected of 5.
