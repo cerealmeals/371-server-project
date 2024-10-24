@@ -1,3 +1,5 @@
+# Step Two: Build Your Minimal Web Server & Test
+
 a)  The combination of HTTPfunctions.py and TCPServer.py make up our server
     Our server can only respond to GET requests, all other requests will be answered
     as 501 Not Implement. 
