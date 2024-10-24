@@ -7,7 +7,7 @@ from HTTPfunctions import *
 hostname = gethostname()
 IPAddr = gethostbyname(hostname)
 
-serverPort = 8235
+serverPort = 8237
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #proxy_host = '127.0.0.1'
 serverSocket.bind((hostname, serverPort))
@@ -54,10 +54,10 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
         print('test', line)
         if line[:6] == 'Host: ':
             host = line[6:]
-            if(host != (IPAddr + ':'+ str(serverPort))):
-                #proxy server stuff
-                BadRequest(version, connectionSocket, IPAddr)
-                return True
+            # if(host != (IPAddr + ':'+ str(serverPort))):
+            #     #proxy server stuff
+            #     #BadRequest(version, connectionSocket, IPAddr)
+            #     return True
         elif line[:19] == 'If-Modified-Since: ':
             t_string = line[19:(19+25)]
             #print(t_string)
@@ -68,7 +68,7 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
     # if the host line is not there send bad request
     if host == 'error':
         BadRequest(version, connectionSocket, IPAddr)
-    
+    print("line71", url)
     # try to open the file
     try:
         f = open(url, 'r', encoding='utf-8')
