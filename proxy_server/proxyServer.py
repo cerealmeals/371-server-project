@@ -59,6 +59,7 @@ def handle_client_request(client_socket):
         if len(response) > 0:
             client_socket.sendall(response)
         else:
+            print("line62")
             break
 
     dest_socket.close()
@@ -68,7 +69,7 @@ def handle_client_request(client_socket):
 hostname = gethostname()
 IPAddr = gethostbyname(hostname)
 
-serverPort = 8209
+serverPort = 8214
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #proxy_host = '127.0.0.1'
 serverSocket.bind((hostname, serverPort))
