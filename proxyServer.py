@@ -36,28 +36,12 @@ def extract_host_and_port(request):
 
     return host, port
 
-def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, serverPort):
-    
-    # get the url
-    # if url.find('https://') != -1:
-    #     start = url.find('https://') + len('https://')
-    #     url = url[1 + url.find('/',start):]
-    # elif url.find('http://') != -1:
-    #     start = url.find('http://') + len('http://')
-    #     url = url[1 + url.find('/',start + 1):]
-    # else:
-    #     url = url[1:]
-    print("line35", url)
-    
+def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, serverPort):    
     host = 'error'
     for line in lines_in_response:
         print('test', line)
         if line[:6] == 'Host: ':
             host = line[6:]
-            # if(host != (IPAddr + ':'+ str(serverPort))):
-            #     #proxy server stuff
-            #     #BadRequest(version, connectionSocket, IPAddr)
-            #     return True
         elif line[:19] == 'If-Modified-Since: ':
             t_string = line[19:(19+25)]
             #print(t_string)
@@ -92,8 +76,6 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
     return False
     
 def send_from_caching(lines_in_response, version, connectionSocket, url, IPAddr, serverPort, command):
-    print("line 40", version)
-    print("line 41", url)
     match command:
             case 'GET':
                 GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, serverPort)
@@ -119,25 +101,16 @@ def send_from_caching(lines_in_response, version, connectionSocket, url, IPAddr,
 # read data from client requests
 def handle_client_request(client_socket):
     print("received request: \n")
-
-    # byte object
-    #request = b''
     
-    while True:
-        request = client_socket.recv(2048).decode('utf-8')
+    request = client_socket.recv(2048).decode('utf-8')
 
-        if len(request) > 0:
-            #request += message
-            #print(message.decode('utf-8'))
-            print(request)
-            if '\r\n\r\n' in request:
-                break
-        else:
-            break
+    print(request)
+    
+    lines_in_response = request.split('\n')
 
-    # get the url
-    # split the response line by line
-    lines_in_response = request.split(os.linesep)
+    for i in range(len(lines_in_response)):
+            #print(lines_in_response[i])
+            lines_in_response[i] = lines_in_response[i][:-1]
         
     # get the first line and decode
     words_in_request_line = lines_in_response[0].split(' ')
@@ -176,17 +149,16 @@ def handle_client_request(client_socket):
 
         print("received response: \n")
 
+        # get response from the original server
+        response = dest_socket.recv(2048).decode('utf-8')
 
-        while True:
-            # get response from the original server
-            response = dest_socket.recv(2048).decode('utf-8')
+        print(response)
+        if len(response) > 0:
+            client_socket.sendall(response.encode())
 
-            print(response)
-            if len(response) > 0:
-                client_socket.sendall(response.encode())
-
-                # store the file in the cache, create a html file which the name is the same as in the url but before the ".html" part
-                # print("line184", url)
+            # store the file in the cache, create a html file which the name is the same as in the url but before the ".html" part
+            # print("line184", url)
+            if response.find('200 OK') != -1:
                 cache_file_name = url
                 file_stream = open(cache_file_name,"w") 
 
@@ -198,9 +170,9 @@ def handle_client_request(client_socket):
                 file_stream.write(context)
 
                 file_stream.close()
-            else:
-                print("line62")
-                break
+        else:
+            print("line62")
+            
 
         dest_socket.close()
 
