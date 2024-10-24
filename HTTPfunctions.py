@@ -18,7 +18,7 @@ def makeHTTPresponse(statusLine, data, url, IPAddr):
     response_lines.append('')
     if data != None:
         response_lines.append(data)
-    to_send = (os.linesep).join(response_lines)
+    to_send = ('\r\n').join(response_lines)
     return to_send
 
 def GetCommand(lines_in_response, version, connectionSocket, url, IPAddr, serverPort):

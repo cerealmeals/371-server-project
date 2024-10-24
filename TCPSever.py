@@ -25,7 +25,7 @@ def mutil_thread(connectionSocket):
 
 
         # split the response line by line
-        lines_in_response = response.split(os.linesep)
+        lines_in_response = response.split('\n')
 
         for i in range(len(lines_in_response)):
             print(lines_in_response[i])
