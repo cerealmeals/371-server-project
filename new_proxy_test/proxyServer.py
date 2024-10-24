@@ -47,7 +47,7 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
     #     url = url[1 + url.find('/',start + 1):]
     # else:
     #     url = url[1:]
-    print("line35", url)
+    #print("line35", url)
     
     host = 'error'
     for line in lines_in_response:
@@ -68,7 +68,7 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
     # if the host line is not there send bad request
     if host == 'error':
         BadRequest(version, connectionSocket, IPAddr)
-    print("line71", url)
+    #print("line71", url)
     # try to open the file
     try:
         f = open(url, 'r', encoding='utf-8')
@@ -92,8 +92,9 @@ def GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, 
     return False
     
 def send_from_caching(lines_in_response, version, connectionSocket, url, IPAddr, serverPort, command):
-    print("line 40", version)
-    print("line 41", url)
+    #print("line 40", version)
+    #print("line 41", url)
+    print('Send From Cache')
     match command:
             case 'GET':
                 GetCommand_cache(lines_in_response, version, connectionSocket, url, IPAddr, serverPort)
@@ -118,7 +119,7 @@ def send_from_caching(lines_in_response, version, connectionSocket, url, IPAddr,
 
 # read data from client requests
 def handle_client_request(client_socket):
-    print("received request: \n")
+    print("\nreceived request: \n")
 
     # byte object
     #request = b''
@@ -158,11 +159,11 @@ def handle_client_request(client_socket):
     else:
         url = url[1:]
     
-    print("line158", url)
+    #print("line158", url)
 
     try:
         f = open(url, 'r', encoding='utf-8') 
-        print("line 104")
+        #print("line 104")
         send_from_caching(lines_in_response, version, client_socket, url, IPAddr, serverPort, command)
     except Exception as e:
 
@@ -177,7 +178,7 @@ def handle_client_request(client_socket):
         # send the request to the original server
         dest_socket.sendall(request.encode())
 
-        print("received response: \n")
+        print("\nreceived response: \n")
 
 
         
@@ -212,7 +213,7 @@ def handle_client_request(client_socket):
 
 while True:
     client_socket, addr = serverSocket.accept()
-    print('address:', addr[0], ':', addr[1])
+    print('address of created TCP socket:', addr[0], ':', addr[1])
 
     # create a thread for handling the client request
     handle_client = threading.Thread(target=handle_client_request, args=(client_socket,))
